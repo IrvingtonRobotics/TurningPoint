@@ -12,9 +12,9 @@
 
 int deDead(int speed) {
 	// deal with dead zone
-	//if (abs(speed) < 10) {
-	//	return 0;
-	//}
+	if (abs(speed) < 10) {
+		return 0;
+	}
 	return speed;
 }
 
