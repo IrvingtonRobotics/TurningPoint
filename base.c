@@ -3,7 +3,7 @@
 #pragma config(Motor,  port3,           driveRightBack, tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port4,           liftTop,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port5,           liftBottom,    tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port6,           clawFlip,      tmotorServoStandard, openLoop)
+#pragma config(Motor,  port6,           clawFlip,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           conveyor,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           flywheelLeft,  tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port9,           flywheelRight, tmotorVex393_MC29, openLoop, reversed)
@@ -18,6 +18,8 @@ int deDead(int speed) {
 	return speed;
 }
 
+// ---- MOVE: wrappers around atomic movement functions
+
 void moveDrive(int leftPow, int rightPow) {
 	// Move the left side of the robot
 	motor[driveLeftFront] = leftPow;
@@ -27,7 +29,32 @@ void moveDrive(int leftPow, int rightPow) {
 	motor[driveRightBack] = rightPow;
 }
 
+void moveArms(int dir) {
+	// move both arms in unison
+	motor[liftTop] = dir;
+	motor[liftBottom] = dir;
+}
+
+void moveConveyor(int speed) {
+	// move conveyor
+	motor[conveyor] = speed;
+}
+
+void moveFlywheel(int speed) {
+	motor[flywheelLeft] = speed;
+	motor[flywheelRight] = speed;
+}
+
+void moveClaw(int speed) {
+	motor[clawFlip] = speed;
+}
+
+// ---- DO: observe input and act upon it
+
+// drive
+
 void doDrive() {
+	// one-joystick drive on left joystick (ch 3 and 4)
 	int y = deDead(vexRT[Ch3]);
 	int x = deDead(vexRT[Ch4]);
 	int leftSpeed = x + y;
@@ -35,54 +62,49 @@ void doDrive() {
 	moveDrive(leftSpeed, rightSpeed);
 }
 
-void moveArm(int dir) {
-	motor[liftTop] = dir;
-	motor[liftBottom] = dir;
-}
-
-void runConveyor(int speed) {
-	motor[conveyor] = speed;
-}
+// conveyor
 
 void doConveyor() {
+	// buttons 6U and 6D move conveyor up and down
 	if (vexRT[Btn6U]) {
-		runConveyor(127);
+		moveConveyor(127);
 	} else if (vexRT[Btn6D]) {
-		runConveyor(-127);
+		moveConveyor(-127);
 	} else {
-		runConveyor(0);
+		moveConveyor(0);
 	}
 }
 
-//bool flywheelGoing = false;
-
-void runFlywheel(int speed) {
-	motor[flywheelLeft] = speed;
-	motor[flywheelRight] = speed;
-}
+// flywheel
 
 void doFlywheel() {
+	// button 5D moves flywheel
 	if (vexRT[Btn5D]) {
-		runFlywheel(127);
+		moveFlywheel(127);
 	} else {
-		runFlywheel(0);
+		moveFlywheel(0);
 	}
 }
 
+// arm
+
 void doArms() {
+	// Right joystick (ch2) controls arms
 	int speed = deDead(vexRT[Ch2]);
-	moveArm(speed);
+	moveArms(speed);
 }
+
+// claw
 
 bool clawFlipped = true;
-
-void turnClaw(int pos) {
-	motor[clawFlip] = pos;
-}
+int clawDir = 0;
 
 void flipClaw() {
-  turnClaw(clawFlipped ? 50 : -50);
-	clawFlipped = !clawFlipped;
+	clawDir = clawDir + (clawFlipped ? 50 : -50);
+	if (abs(clawDir) == 50) {
+		clawFlipped = !clawFlipped;
+	}
+	moveClaw(clawDir);
 }
 
 void doClaw() {
@@ -90,6 +112,8 @@ void doClaw() {
 		flipClaw();
 	}
 }
+
+// ---- MAIN
 
 task main() {
 	while (true) {
