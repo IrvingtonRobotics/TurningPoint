@@ -19,16 +19,25 @@ void rotateAngle(int angle) {
 	stopDriving();
 }
 
-void shoot(int flag, int distanceFromBase) {
-	// 3 for top flag, 2 for middle flag
-	int dx = distanceFromBase;
-	int dy;
-	if (flag == 3) {
-		dy = 46;
-		} else if (flag == 2) {
-		dy = 32;
+#define HIGH_FLAG 3
+#define MIDDLE_FLAG 2
+int flywheelFlag = HIGH_FLAG;
+
+int topSpeeds[] = {60, 70, 90, 110};
+int middleSpeeds[] = {50, 60, 80, 100};
+
+void runFlywheel(int distanceFromBase) {
+	int speed;
+	if (flywheelFlag == HIGH_FLAG) {
+		speed = topSpeeds[distanceFromBase];
+	} else {
+		speed = middleSpeeds[distanceFromBase];
 	}
-	// TODO: now do some physics and speed curve to determine motor control
+	moveFlywheel(speed);
+}
+
+void stopFlywheel() {
+	moveFlywheel(0);
 }
 
 void flipClaw() {

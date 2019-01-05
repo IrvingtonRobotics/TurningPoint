@@ -38,13 +38,28 @@ task driveController() {
 			SensorValue[rightEncoder] = 0;
 		}
 		drive(leftDriveSpeed, rightDriveSpeed);
-		wait1Msec(20);
+		wait1Msec(10);
 	}
+}
+
+int flywheelSpeed = 0;
+int targetFlywheelSpeed = 0;
+task flywheelController() {
+	while (true) {
+		flywheelSpeed += sgn(targetFlywheelSpeed - flywheelSpeed);
+		flywheel(flywheelSpeed);
+		wait1Msec(10);
+	}
+}
+
+void moveFlywheel(int speed) {
+	targetFlywheelSpeed = speed;
 }
 
 void startAllTasks() {
 	startTask(clawController);
 	startTask(driveController);
+	startTask(flywheelController);
 }
 
 void moveDrive(int left, int right) {

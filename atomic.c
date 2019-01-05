@@ -22,7 +22,7 @@ void moveConveyor(int speed) {
 	motor[conveyor] = speed;
 }
 
-void moveFlywheel(int speed) {
+void flywheel(int speed) {
 	motor[flywheelLeft] = speed;
 	motor[flywheelRight] = speed;
 }

@@ -22,10 +22,21 @@ void doConveyor() {
 // flywheel
 
 void doFlywheel() {
-	if (flywheelButton) {
-		moveFlywheel(127);
-		} else {
-		moveFlywheel(0);
+	if (highFlagButton) {
+		flywheelFlag = HIGH_FLAG;
+	} else if (middleFlagButton) {
+		flywheelFlag = MIDDLE_FLAG;
+	}
+	if (distance1Button) {
+		runFlywheel(1);
+	} else if (distance2Button) {
+		runFlywheel(2);
+	} else if (distance3Button) {
+		runFlywheel(3);
+	} else if (distance4Button) {
+		runFlywheel(4);
+	} else {
+		stopFlywheel();
 	}
 }
 

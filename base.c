@@ -21,16 +21,7 @@
 
 #include "Vex_Competition_Includes.c"
 
-// main controller
-#define leftDriveJoystick vexRT[Ch3]
-#define rightDriveJoystick vexRT[Ch2]
-#define clawButton vexRT[Btn7U]
-// partner (add Xmtr2 to end of name for partner joystick)
-#define armJoystick vexRT[Ch2Xmtr2]
-#define conveyorUpButton vexRT[Btn6UXmtr2]
-#define conveyorDownButton vexRT[Btn6DXmtr2]
-#define flywheelButton vexRT[Btn8UXmtr2]
-
+#include "mapping.c"
 #include "utils.c"
 #include "atomic.c"
 #include "tasks.c"
@@ -59,7 +50,7 @@ task autonomous() {
 		// drive forward then turn to shoot toward high flag
 		driveStraight(80, 12);
 		rotateAngle(90);
-		shoot(3, 30);
+		//shoot(3, 30);
 		// pick up cap
 		rotateAngle(-45);
 		driveStraight(80, 20);
