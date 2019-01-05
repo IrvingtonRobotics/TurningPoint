@@ -28,15 +28,16 @@ task driveController() {
 	SensorValue[leftEncoder] = 0;
 	SensorValue[rightEncoder] = 0;
 	while(true) {
-		if (driveClicksLeft > 0) {
+		/*if (driveClicksLeft > 0) {
 			int left = -SensorValue[leftEncoder];
 			int right = -SensorValue[rightEncoder];
 			int error = right - left;
 			rightDriveSpeed += error / 10;
-			driveClicksLeft -= abs(right);
+			driveClicksLeft -= 10;
+			//driveClicksLeft -= abs(right);
 			SensorValue[leftEncoder] = 0;
 			SensorValue[rightEncoder] = 0;
-		}
+		}*/
 		drive(leftDriveSpeed, rightDriveSpeed);
 		wait1Msec(10);
 	}
@@ -68,8 +69,9 @@ void moveDrive(int left, int right) {
 }
 
 void driveStraight(int speed, int distance) {
+	// distance in inches
 	// where's copysign?
 	speed = sgn(distance) * abs(speed);
 	moveDrive(speed, speed);
-	driveClicksLeft = abs(distance) * 360;
+	driveClicksLeft = abs(distance) * 28;
 }

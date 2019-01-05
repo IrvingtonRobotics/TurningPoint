@@ -38,33 +38,50 @@ void pre_auton() {
 task autonomous() {
 	startAllTasks();
 	// 85 is p much max speed since speed is nonlinear, 60 is reasonable speed
-	bool isRed = false;
-	// practice as if blue, then negative of drive angles for red
-	angleMultiplier = isRed ? -1 : 1;
+	bool isRed = true;
+	// practice as if red, then negative of drive angles for blue
+	angleMultiplier = isRed ? 1 : -1;
 	// false --> starting position closer to flags
 	// true --> starting position closer to posts
-	bool startNearFlags = true;
+	bool startNearFlags = false;
 	// completely different routines by sides
 	if (startNearFlags) {
-		// start at edge of starting tile closer to the flag
-		// drive forward then turn to shoot toward high flag
-		driveStraight(80, 12);
-		rotateAngle(90);
-		//shoot(3, 30);
-		// pick up cap
-		rotateAngle(-45);
-		driveStraight(80, 20);
-		// TODO: lift to pick up the cap
-		// drive to pole
-		driveStraight(-80, -20);
-		rotateAngle(-135);
-		driveStraight(80, 24);
-		rotateAngle(-90);
-		driveStraight(80, 24);
-		// TODO: lift the lift
-		flipClaw();
-		} else {
+		// -- shoot ball
+		// spin up flywheel for a few seconds
+		runFlywheel(2);
+		wait(3);
+		// shoot
+		moveConveyor(127);
+		wait(1);
+		// stop
+		moveConveyor(0);
+		stopFlywheel();
 
+		// -- remove bands
+		moveLift(100);
+		flipClaw();
+		waitMS(500);
+		flipClaw();
+		waitMS(500);
+		moveLift(-50);
+		waitMS(200);
+		moveLift(0);
+
+		// -- flip clap
+		driveStraight(80, 40);
+		moveLift(100);
+		waitMS(500);
+		flipClaw();
+		moveLift(-50);
+		driveStraight(80, -20);
+
+		// -- go on platform
+	} else {
+		// -- go on platform
+		/*wait(1);
+		driveStraight(80, 24);
+		rotateAngle(90);
+		driveStraight(110, 80);*/
 	}
 	angleMultiplier = 1;
 }

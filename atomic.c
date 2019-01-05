@@ -17,6 +17,10 @@ void moveArms(int dir) {
 	motor[liftBottom] = dir;
 }
 
+void moveLift(int dir) {
+	moveArms(dir);
+}
+
 void moveConveyor(int speed) {
 	// move conveyor
 	motor[conveyor] = speed;
