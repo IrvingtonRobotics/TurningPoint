@@ -39,25 +39,3 @@ void doFlywheel() {
 		stopFlywheel();
 	}
 }
-
-// arm
-
-void doArms() {
-	int speed = deDead(armJoystick);
-	moveArms(speed);
-}
-
-// claw
-
-bool lastClawButtonValue = false;
-bool clawFlipped = true;
-int clawDir = 0;
-
-void doClaw() {
-	// for flipping 180
-	bool currentClawButtonValue = clawButton ? true : false;
-	if (currentClawButtonValue && !lastClawButtonValue) {
-		flipClaw();
-	}
-	lastClawButtonValue = currentClawButtonValue;
-}

@@ -39,12 +39,3 @@ void runFlywheel(int distanceFromBase) {
 void stopFlywheel() {
 	moveFlywheel(0);
 }
-
-void flipClaw() {
-	int pos = clawPosition();
-	if (abs(pos - clawPosA) < abs(pos - clawPosB)) {
-		clawTarget = clawPosB;
-		} else {
-		clawTarget = clawPosA;
-	}
-}
