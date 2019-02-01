@@ -15,6 +15,7 @@
 ### Secondary Joystick
 | Joystick Channel | Position | Description |
 |-----------|------|------------|
+| `Btn6UXmtr2` | Upper button on back right | Run the flipper |
 | `Btn7UXmtr2` | Upper button on front left | Switch to flywheel high flag mode |
 | `Btn7DXmtr2` | Lower button on front left | Switch to flywheel middle flag mode |
 | `Btn8UXmtr2` | Upper button on front right | **Hold** to spin up flywheel to distance 1 |
@@ -34,6 +35,7 @@
 | Motor Port | Motor Name | Function |
 |-------------|------|----------|
 | 1 | `flywheelLeft` | Left flywheel motor |
+| 2 | `flipper` | Flipper motor |
 | 4 | `driveLeftFront` | Left front drive motor |
 | 5 | `driveLeftBack` | Left back drive motor |
 | 6 | `driveRightFront` | Right front drive motor |

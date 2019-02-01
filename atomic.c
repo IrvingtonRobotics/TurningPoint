@@ -20,3 +20,7 @@ void flywheel(int speed) {
 	motor[flywheelLeft] = speed;
 	motor[flywheelRight] = speed;
 }
+
+void moveFlipper(int speed) {
+	motor[flipper] = speed;
+}

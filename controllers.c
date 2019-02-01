@@ -39,3 +39,13 @@ void doFlywheel() {
 		stopFlywheel();
 	}
 }
+
+// flipper
+
+void doFlipper() {
+	if (flipperButton) {
+		moveFlipper(127);
+	} else {
+		moveFlipper(0);
+	}
+}
