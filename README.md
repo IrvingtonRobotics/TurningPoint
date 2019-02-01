@@ -36,9 +36,11 @@
 |-------------|------|----------|
 | 1 | `flywheelLeft` | Left flywheel motor |
 | 2 | `flipper` | Flipper motor |
-| 4 | `driveLeftFront` | Left front drive motor |
+| 3 | `driveLeftFront` | Left front drive motor |
+| 4 | `driveLeftMiddle` | Left front drive motor |
 | 5 | `driveLeftBack` | Left back drive motor |
 | 6 | `driveRightFront` | Right front drive motor |
-| 7 | `driveRightBack` | Right back drive motor |
+| 7 | `driveRightMiddle` | Right back drive motor |
+| 8 | `driveRightBack` | Right front drive motor |
 | 9 | `conveyor` | Conveyor motor |
 | 10 | `flywheelRight` | Right flywheel motor |

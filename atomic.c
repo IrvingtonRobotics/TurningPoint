@@ -5,9 +5,11 @@ void drive(int leftPow, int rightPow) {
 	**/
 	// Move the left side of the robot
 	motor[driveLeftFront] = leftPow;
+	motor[driveLeftMiddle] = leftPow;
 	motor[driveLeftBack] = leftPow;
 	// Move the right side of the robot
 	motor[driveRightFront] = rightPow;
+	motor[driveRightMiddle] = rightPow;
 	motor[driveRightBack] = rightPow;
 }
 
