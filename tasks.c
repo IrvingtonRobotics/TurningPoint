@@ -1,26 +1,35 @@
 #include "utils.c"
 #include "atomic.c"
 
+
 // for driving straight
-int driveClicksLeft = 0;
+#define driveClicksPerInch 28
+#define driveClicksTolerance (driveClicksPerInch / 6)
+int leftDriveClicks = 0;
+int rightDriveClicks = 0;
 int leftDriveSpeed = 0;
 int rightDriveSpeed = 0;
 
-task driveController() {
+void resetDriveEncoders() {
 	SensorValue[leftEncoder] = 0;
 	SensorValue[rightEncoder] = 0;
+}
+
+task driveController() {
+	resetDriveEncoders();
 	while(true) {
-		/*if (driveClicksLeft > 0) {
-			int left = -SensorValue[leftEncoder];
-			int right = -SensorValue[rightEncoder];
-			int error = right - left;
-			rightDriveSpeed += error / 10;
-			driveClicksLeft -= 10;
-			//driveClicksLeft -= abs(right);
-			SensorValue[leftEncoder] = 0;
-			SensorValue[rightEncoder] = 0;
-		}*/
-		drive(leftDriveSpeed, rightDriveSpeed);
+		int dLeft = leftDriveClicks - SensorValue[leftEncoder];
+		dLeft = deDead(dLeft, driveClicksTolerance);
+		int dRight = rightDriveClicks - SensorValue[rightEncoder];
+		dRight = deDead(dRight, driveClicksTolerance);
+		if (dLeft == 0 && dRight == 0) {
+			drive(leftDriveSpeed, rightDriveSpeed);
+		} else {
+			// will do PID control here; hard stop rn
+			int leftSpeed = dLeft == 0 ? 0 : leftDriveSpeed;
+			int rightSpeed = dRight == 0 ? 0 : rightDriveSpeed;
+			drive(leftSpeed, rightSpeed);
+		}
 		wait1Msec(10);
 	}
 }
@@ -49,10 +58,17 @@ void moveDrive(int left, int right) {
 	rightDriveSpeed = right;
 }
 
+void driveDistance(int speed, int leftDist, int rightDist) {
+	int maxDist = max(leftDist, rightDist);
+	speed = abs(speed);
+	int leftSpeed = leftDist / maxDist * speed;
+	int rightSpeed = rightDist / maxDist * speed;
+	moveDrive(leftSpeed, rightSpeed);
+	leftDriveClicks = leftDist * driveClicksPerInch;
+	rightDriveClicks = rightDist * driveClicksPerInch;
+	resetDriveEncoders();
+}
+
 void driveStraight(int speed, int distance) {
-	// distance in inches
-	// where's copysign?
-	speed = sgn(distance) * abs(speed);
-	moveDrive(speed, speed);
-	driveClicksLeft = abs(distance) * 28;
+	driveDistance(speed, distance, distance);
 }

@@ -3,8 +3,8 @@
 #define leftDriveJoystick vexRT[Ch3]
 #define conveyorUpButton vexRT[Btn6U]
 #define conveyorDownButton vexRT[Btn6D]
+#define flipperButton vexRT[Btn5U]
 /// partner (add Xmtr2 to end of name for partner joystick)
-#define flipperButton vexRT[Btn6UXmtr2]
 // flywheel
 #define highFlagButton vexRT[Btn7UXmtr2]
 #define middleFlagButton vexRT[Btn7RXmtr2]
