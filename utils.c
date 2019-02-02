@@ -33,7 +33,7 @@ int deDead(int in, int threshold) {
 }
 
 int deDead(int in) {
-	return deDead(in, 15);
+	return deDead(in, 20);
 }
 
 void waitMS(int millis) {

@@ -10,6 +10,8 @@ int leftDriveClicks = 0;
 int rightDriveClicks = 0;
 int leftDriveSpeed = 0;
 int rightDriveSpeed = 0;
+bool enableEncoderDrive = false;
+bool driveFlipped = false;
 
 void resetDriveEncoders() {
 	SensorValue[leftEncoder] = 0;
@@ -17,16 +19,21 @@ void resetDriveEncoders() {
 }
 
 int getDLeft() {
-	int dLeft = leftDriveClicks - getLeftDriveEncoder();
-	return deDead(dLeft, driveClicksTolerance);
+	//int dLeft = leftDriveClicks - getLeftDriveEncoder();
+	//return deDead(dLeft, driveClicksTolerance);
+	return 0;
 }
 
 int getDRight() {
-	int dRight = rightDriveClicks - getRightDriveEncoder();
-	return deDead(dRight, driveClicksTolerance);
+	//int dRight = rightDriveClicks - getRightDriveEncoder();
+	//return deDead(dRight, driveClicksTolerance);
+	return 0;
 }
 
 bool isEncoderDrive() {
+	if (!enableEncoderDrive) {
+		return false;
+	}
 	int dLeft = getDLeft();
 	int dRight = getDRight();
 	return (dLeft != 0 || dRight != 0);
@@ -45,9 +52,9 @@ int getDriveSpeed(int diff, int fullSpeed) {
 task driveController() {
 	resetDriveEncoders();
 	while(true) {
-		int dLeft = getDLeft();
-		int dRight = getDRight();
 		if (isEncoderDrive()) {
+			int dLeft = getDLeft();
+			int dRight = getDRight();
 			int leftSpeed = getDriveSpeed(dLeft, leftDriveSpeed);
 			int rightSpeed = getDriveSpeed(dRight, rightDriveSpeed);
 			drive(leftSpeed, rightSpeed);
@@ -73,14 +80,26 @@ void moveFlywheel(int speed) {
 	targetFlywheelSpeed = speed;
 }
 
-void startAllTasks() {
+void moveFlywheelInstant(int speed) {
+	moveFlywheel(speed);
+	flywheelSpeed = speed;
+}
+
+void startUsercontrolTasks() {
 	startTask(driveController);
 	startTask(flywheelController);
 }
 
 void moveDrive(int left, int right) {
-	leftDriveSpeed = left;
-	rightDriveSpeed = right;
+	if (driveFlipped) {
+		leftDriveSpeed = right;
+		rightDriveSpeed = left;
+	}
+	else {
+		leftDriveSpeed = left;
+		rightDriveSpeed = right;
+	}
+	drive(leftDriveSpeed, rightDriveSpeed);
 }
 
 void driveDistance(int speed, int leftDist, int rightDist) {
