@@ -2,9 +2,11 @@
 
 void doDrive() {
 	// two joysticks
-	int leftSpeed = deDead(leftDriveJoystick);
-	int rightSpeed = deDead(rightDriveJoystick);
-	moveDrive(leftSpeed, rightSpeed);
+	if (!isEncoderDrive()) {
+		int leftSpeed = deDead(leftDriveJoystick);
+		int rightSpeed = deDead(rightDriveJoystick);
+		moveDrive(leftSpeed, rightSpeed);
+	}
 }
 
 // conveyor
@@ -45,6 +47,8 @@ void doFlywheel() {
 void doFlipper() {
 	if (flipperButton) {
 		moveFlipper(127);
+	} else if (flipperIntakeButton) {
+		moveFlipper(-127);
 	} else {
 		moveFlipper(0);
 	}

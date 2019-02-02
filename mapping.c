@@ -4,6 +4,7 @@
 #define conveyorUpButton vexRT[Btn6U]
 #define conveyorDownButton vexRT[Btn6D]
 #define flipperButton vexRT[Btn5U]
+#define flipperIntakeButton vexRT[Btn5D]
 /// partner (add Xmtr2 to end of name for partner joystick)
 // flywheel
 #define highFlagButton vexRT[Btn7UXmtr2]

@@ -26,3 +26,11 @@ void flywheel(int speed) {
 void moveFlipper(int speed) {
 	motor[flipper] = speed;
 }
+
+int getRightDriveEncoder() {
+	return SensorValue[rightEncoder];
+}
+
+int getLeftDriveEncoder() {
+	return -(SensorValue[leftEncoder]);
+}

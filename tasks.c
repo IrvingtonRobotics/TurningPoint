@@ -3,8 +3,9 @@
 
 
 // for driving straight
-#define driveClicksPerInch 28
-#define driveClicksTolerance (driveClicksPerInch / 6)
+#define driveClicksPerInch 20
+#define driveClicksTolerance (driveClicksPerInch * 2)
+#define pRegion (driveClicksPerInch * 5)
 int leftDriveClicks = 0;
 int rightDriveClicks = 0;
 int leftDriveSpeed = 0;
@@ -15,20 +16,43 @@ void resetDriveEncoders() {
 	SensorValue[rightEncoder] = 0;
 }
 
+int getDLeft() {
+	int dLeft = leftDriveClicks - getLeftDriveEncoder();
+	return deDead(dLeft, driveClicksTolerance);
+}
+
+int getDRight() {
+	int dRight = rightDriveClicks - getRightDriveEncoder();
+	return deDead(dRight, driveClicksTolerance);
+}
+
+bool isEncoderDrive() {
+	int dLeft = getDLeft();
+	int dRight = getDRight();
+	return (dLeft != 0 || dRight != 0);
+}
+
+int getDriveSpeed(int diff, int fullSpeed) {
+	if (abs(diff) < driveClicksTolerance) {
+		return 0;
+	} else if (abs(diff) < pRegion) {
+		return abs(fullSpeed) * diff / pRegion;
+	} else {
+		return sgn(diff) * abs(fullSpeed);
+	}
+}
+
 task driveController() {
 	resetDriveEncoders();
 	while(true) {
-		int dLeft = leftDriveClicks - SensorValue[leftEncoder];
-		dLeft = deDead(dLeft, driveClicksTolerance);
-		int dRight = rightDriveClicks - SensorValue[rightEncoder];
-		dRight = deDead(dRight, driveClicksTolerance);
-		if (dLeft == 0 && dRight == 0) {
-			drive(leftDriveSpeed, rightDriveSpeed);
-		} else {
-			// will do PID control here; hard stop rn
-			int leftSpeed = dLeft == 0 ? 0 : leftDriveSpeed;
-			int rightSpeed = dRight == 0 ? 0 : rightDriveSpeed;
+		int dLeft = getDLeft();
+		int dRight = getDRight();
+		if (isEncoderDrive()) {
+			int leftSpeed = getDriveSpeed(dLeft, leftDriveSpeed);
+			int rightSpeed = getDriveSpeed(dRight, rightDriveSpeed);
 			drive(leftSpeed, rightSpeed);
+		} else {
+			drive(leftDriveSpeed, rightDriveSpeed);
 		}
 		wait1Msec(10);
 	}
@@ -39,6 +63,7 @@ int targetFlywheelSpeed = 0;
 task flywheelController() {
 	while (true) {
 		flywheelSpeed += sgn(targetFlywheelSpeed - flywheelSpeed);
+		flywheelSpeed = bound(flywheelSpeed, 0, 127);
 		flywheel(flywheelSpeed);
 		wait1Msec(10);
 	}
