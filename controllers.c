@@ -2,10 +2,15 @@
 
 void doDrive() {
 	// two joysticks
-	int leftSpeed = deDead(leftDriveJoystick);
-	int rightSpeed = deDead(rightDriveJoystick);
-	moveDrive(leftSpeed, rightSpeed);
+	if (!isEncoderDrive()) {
+		int leftSpeed = deDead(leftDriveJoystick);
+		int rightSpeed = deDead(rightDriveJoystick);
+		moveDrive(leftSpeed, rightSpeed);
+	}
 }
+
+
+
 
 // conveyor
 
@@ -35,29 +40,21 @@ void doFlywheel() {
 		runFlywheel(3);
 	} else if (distance4Button) {
 		runFlywheel(4);
+	} else if (flywheelFullSpeedButton) {
+		moveFlywheelInstant(127);
 	} else {
 		stopFlywheel();
 	}
 }
 
-// arm
-
-void doArms() {
-	int speed = deDead(armJoystick);
-	moveArms(speed);
-}
-
-// claw
-
-bool lastClawButtonValue = false;
-bool clawFlipped = true;
-int clawDir = 0;
-
-void doClaw() {
-	// for flipping 180
-	bool currentClawButtonValue = clawButton ? true : false;
-	if (currentClawButtonValue && !lastClawButtonValue) {
-		flipClaw();
+// flipper
+int flipperDirection = 0;
+#define flipperSpeed 127
+void doFlipper() {
+	if (flipperButton) {
+		flipperDirection = flipperDirection ? 0: 1;
+	} else if (flipperIntakeButton) {
+		flipperDirection = flipperDirection ? 0 : -1;
 	}
-	lastClawButtonValue = currentClawButtonValue;
+	moveFlipper(flipperDirection * flipperSpeed);
 }
