@@ -1,10 +1,14 @@
 // drive
 
+int driveCurve(int speed) {
+	return sgn(speed) * bezier(abs(speed), 0, 10, 20, 127);
+}
+
 void doDrive() {
 	// two joysticks
 	if (!isEncoderDrive()) {
-		int leftSpeed = deDead(leftDriveJoystick);
-		int rightSpeed = deDead(rightDriveJoystick);
+		int leftSpeed = deDead(driveCurve(leftDriveJoystick));
+		int rightSpeed = deDead(driveCurve(rightDriveJoystick));
 		moveDrive(leftSpeed, rightSpeed);
 	}
 }
@@ -40,19 +44,21 @@ void doFlywheel() {
 		runFlywheel(3);
 	} else if (distance4Button) {
 		runFlywheel(4);
+	} else if (flywheelFullSpeedButton) {
+		moveFlywheelInstant(127);
 	} else {
 		stopFlywheel();
 	}
 }
 
 // flipper
-
+int flipperDirection = 0;
+#define flipperSpeed 127
 void doFlipper() {
 	if (flipperButton) {
-		moveFlipper(127);
+		flipperDirection = flipperDirection ? 0: 1;
 	} else if (flipperIntakeButton) {
-		moveFlipper(-127);
-	} else {
-		moveFlipper(0);
+		flipperDirection = flipperDirection ? 0 : -1;
 	}
+	moveFlipper(flipperDirection * flipperSpeed);
 }

@@ -1,4 +1,3 @@
-
 void drive(int leftPow, int rightPow) {
 	/* Positive: move forward;
 	* Negative: move backward
@@ -27,10 +26,10 @@ void moveFlipper(int speed) {
 	motor[flipper] = speed;
 }
 
-int getRightDriveEncoder() {
+int rightDriveEncoder() {
 	return SensorValue[rightEncoder];
 }
 
-int getLeftDriveEncoder() {
-	return -(SensorValue[leftEncoder]);
+int leftDriveEncoder() {
+	return SensorValue[leftEncoder];
 }

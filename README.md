@@ -7,15 +7,16 @@
 ### Primary Joystick
 | Joystick Channel | Position | Description |
 |-----------|------|-----------|
-| `Ch3` | Vertical of left joystick | Left drive control |
-| `Ch2` | Vertical of right joystick | Right drive control |
-| `Btn6U` | Upper button on back right | Raise conveyor |
-| `Btn6D` | Bottom button on back down | Lower conveyor |
+| `Ch3` | Vertical axis of left joystick | Left drive control |
+| `Ch2` | Vertical axis of right joystick | Right drive control |
+| `Btn5U` | Upper button on back left | Start to spin roller for flip |
+| `Btn5D` | Lower button on back left | Start to spin roller for suck |
 
 ### Secondary Joystick
 | Joystick Channel | Position | Description |
 |-----------|------|------------|
-| `Btn6UXmtr2` | Upper button on back right | Run the flipper |
+| `Btn5UXmtr2` | Upper button on back right | Raise conveyor |
+| `Btn5DXmtr2` | Bottom button on back down | Lower conveyor |
 | `Btn7UXmtr2` | Upper button on front left | Switch to flywheel high flag mode |
 | `Btn7DXmtr2` | Lower button on front left | Switch to flywheel middle flag mode |
 | `Btn8UXmtr2` | Upper button on front right | **Hold** to spin up flywheel to distance 1 |
@@ -31,16 +32,16 @@
 | digital1 | `leftEncoder` | Shaft Encoder | Encoder for left drive side |
 | digital3 | `rightEncoder` | Shaft Encoder | Encoder for right drive side |
 
-### Motors 
+### Motors
 | Motor Port | Motor Name | Function |
 |-------------|------|----------|
-| 1 | `flywheelLeft` | Left flywheel motor |
-| 2 | `flipper` | Flipper motor |
+| 1 | `flipper` | Flipper motor |
+| 2 | `flywheelLeft` | Left flywheel motor |
 | 3 | `driveLeftFront` | Left front drive motor |
-| 4 | `driveLeftMiddle` | Left front drive motor |
+| 4 | `driveLeftMiddle` | Left middle drive motor |
 | 5 | `driveLeftBack` | Left back drive motor |
 | 6 | `driveRightFront` | Right front drive motor |
-| 7 | `driveRightMiddle` | Right back drive motor |
-| 8 | `driveRightBack` | Right front drive motor |
-| 9 | `conveyor` | Conveyor motor |
-| 10 | `flywheelRight` | Right flywheel motor |
+| 7 | `driveRightMiddle` | Right middle drive motor |
+| 8 | `driveRightBack` | Right back drive motor |
+| 9 | `flywheelRight` | Right flywheel motor |
+| 10 | `conveyor` | Conveyor motor |
