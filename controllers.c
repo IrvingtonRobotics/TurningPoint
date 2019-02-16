@@ -40,21 +40,19 @@ void doFlywheel() {
 		runFlywheel(3);
 	} else if (distance4Button) {
 		runFlywheel(4);
-	} else if (flywheelFullSpeedButton) {
-		moveFlywheelInstant(127);
 	} else {
 		stopFlywheel();
 	}
 }
 
 // flipper
-int flipperDirection = 0;
-#define flipperSpeed 127
+
 void doFlipper() {
 	if (flipperButton) {
-		flipperDirection = flipperDirection ? 0: 1;
+		moveFlipper(127);
 	} else if (flipperIntakeButton) {
-		flipperDirection = flipperDirection ? 0 : -1;
+		moveFlipper(-127);
+	} else {
+		moveFlipper(0);
 	}
-	moveFlipper(flipperDirection * flipperSpeed);
 }

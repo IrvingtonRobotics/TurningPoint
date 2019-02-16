@@ -1,22 +1,3 @@
-#include "atomic.c"
-#include "tasks.c"
-
-int getLeftDriveEncoder() {
-	if (driveFlipped) {
-		return rightDriveEncoder();
-	} else {
-		return leftDriveEncoder();
-	}
-}
-
-int getRightDriveEncoder() {
-	if (driveFlipped) {
-		return leftDriveEncoder();
-	} else {
-		return rightDriveEncoder();
-	}
-}
-
 void rotateInPlace(int speed) {
 	/* positive speed: turn right
 	* negative speed: turn left
